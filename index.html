@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: black; /* Fundo preto */
+            color: white; /* Cor do texto */
+            overflow: hidden;         
+            
+            position: relative;
+        }
+
+        #spinner-img {
+            width: 200px; /* Ajuste o tamanho conforme necessário */
+            height: 200px; /* Ajuste o tamanho conforme necessário */
+            transition: transform 3s ease-in-out;
+            background: url('https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcR2fUSCihCvkmpn3-9X8smfKykXAPeFbDjTC6uXe9Iw6Zy6HEeL') center center no-repeat ;
+            background-size: cover;
+            border-radius: 50%; /* Para tornar a imagem circular */
+            display: none; /* Inicialmente oculta */
+        }
+
+        #rotate-btn {
+            color: rgb(12, 12, 12);
+            padding: 30px 50px;
+            border: none;
+            text-size-adjust: 70px;
+            border-radius: 3px;
+            font-size: 36px;
+            cursor: pointer;
+            background-image: url('textura_placa.jpg'); /* Substitua pelo caminho correto da sua imagem de textura */
+            background-size: cover; /* Ajuste conforme necessário */
+        }
+
+        #conteudo-h1 {
+            display: none; /* Inicialmente oculto */
+        }
+
+        #sim-btn {
+            display: none; /* Inicialmente oculto */
+            background-color: green; /* Cor de fundo do botão */
+            color: white; /* Cor do texto do botão */
+            padding: 10px 20px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px; /* Espaço entre o texto e o botão */
+        }
+
+        h1 {
+            color: #fff;
+            font-size: 50px;
+            font-family: monospace;
+            font-weight: bold;
+            text-align: center;
+            text-shadow:  
+              1px -1px 0 #2f5d87, 
+              2px -2px 0 #2e5a83, 
+              3px -3px 0 #2d5880, 
+              4px -4px 0 #2b557c, 
+              5px -5px 0 #2a5378, 
+              6px -6px 0 #295074, 
+              7px -7px 0 #274d71, 
+              8px -8px 0 #264b6d, 
+              9px -9px 0 #254869, 
+              10px -10px 0 #234665, 
+              11px -11px 0 #224361, 
+              12px -12px 0 #21405e, 
+              13px -13px 12px rgba(0, 0, 0, 0.55), 
+              13px -13px 1px rgba(0, 0, 0, 0.5);
+        }
+        .gota {
+            transform: rotate(355deg);
+            position: absolute;
+            animation: chuva 5s ease-in-out infinite;
+            top: -30px;
+        }
+ 
+        @-webkit-keyframes chuva {
+            100% {
+                margin-top: 500px;
+                opacity: 0;
+            }
+        }
+        
+        #spinner-container {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+        }
+
+    </style>
+    <title>Não ironicamente</title>
+</head>
+<body>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="main.js"></script>
+
+    <button id="rotate-btn" onclick="iniciarRotacao()">clique</button>
+
+    <div id="spinner-container">
+        <div id="spinner-img"></div>
+        <h1 id="conteudo-h1">Quer jogar fazendinha comigo?</h1>
+        <div><button id="sim-btn" onclick="abrirConversaWhatsApp()">Sim</button></div>
+    </div>
+    <!-- Corações adicionados dinamicamente -->
+    <script>
+        function criarCorações() {
+            const numCorações = 20;
+            for (let i = 0; i < numCorações; i++) {
+                const coração = document.createElement('div');
+                coração.className = 'heart';
+                coração.style.left = Math.random() * window.innerWidth + 'px';
+                document.body.appendChild(coração);
+            }
+        }
+    </script>
+
+    <script>
+        function chuva() {
+            let rand = Math.floor(Math.random() * $(window).width());
+            let randT = Math.floor(Math.random() * 2);
+
+            // Use a tag <img> com height e width ajustados
+            const gota = document.createElement('div');
+            gota.className = 'gota';
+            gota.innerHTML = '<img src="coracao_mine.png" style="height: 20px; width: 39px;">';
+            gota.style.left = rand + 'px';
+            document.body.appendChild(gota);
+
+            setTimeout(() => {
+                chuva();
+            }, 2000);
+        }
+
+        chuva(); // Adicionando chamada à função chuva
+    </script>
+
+    <script>
+        let girando = false;
+
+        function iniciarRotacao() {
+            const spinnerImg = document.getElementById('spinner-img');
+            const rotateBtn = document.getElementById('rotate-btn');
+            const h1Element = document.getElementById('conteudo-h1');
+            const simBtn = document.getElementById('sim-btn');
+
+            if (!girando) {
+                girando = true;
+                rotateBtn.style.display = 'none'; // Oculta o botão
+                spinnerImg.style.display = 'block'; // Torna a imagem visível
+                h1Element.style.display = 'block'; // Torna o h1 visível
+                simBtn.style.display = 'block'; // Torna o botão "Sim" visível
+
+                criarCorações();
+
+                let rotacao = 0;
+                const velocidadeRotacao = 25; // Velocidade de rotação (ajuste conforme necessário)
+                const intervaloRotacao = 50; // Intervalo de atualização (ajuste conforme necessário)
+
+                const intervaloRotacionar = setInterval(() => {
+                    rotacao += velocidadeRotacao;
+                    spinnerImg.style.transform = `rotateY(${rotacao}deg)`;
+                }, intervaloRotacao);
+            }
+        }
+
+        function abrirConversaWhatsApp() {
+            // Substitua 'SEU_NUMERO' pelo número de telefone desejado, incluindo o código do país.
+            window.location.href = 'https://api.whatsapp.com/send?phone=5565992006360';
+        }
+    </script>
+</body>
+</html>
